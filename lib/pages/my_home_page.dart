@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_carrier_info_sample/utils/network_util.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -10,14 +11,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +21,35 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            FutureBuilder<String?>(
+              future: NetworkUtil.currentConnection(),
+              builder: (context, snapshot) {
+                final connection = snapshot.data ?? '取得中...';
+                return Text(
+                  '回線：$connection',
+                );
+              },
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            FutureBuilder<String?>(
+              future: NetworkUtil.getCarrierName(),
+              builder: (context, snapshot) {
+                final carrierName = snapshot.data ?? '取得中...';
+                return Text(
+                  'キャリア名：$carrierName',
+                );
+              },
+            ),
+            FutureBuilder<String>(
+              future: NetworkUtil.getMobileNetworkOperator(),
+              builder: (context, snapshot) {
+                final mobileNetworkOperator = snapshot.data ?? '取得中...';
+                return Text(
+                  'PLMN：$mobileNetworkOperator',
+                );
+              },
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }

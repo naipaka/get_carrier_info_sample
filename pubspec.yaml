@@ -8,7 +8,9 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
-dependencies:
+dependencies: 
+  carrier_info: ^2.0.1
+  connectivity_plus: ^1.0.6
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
